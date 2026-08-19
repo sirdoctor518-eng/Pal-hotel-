@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, Image as ImageIcon, Sparkles, Star } from 'lucide-react';
 
+// Direct bundled asset imports for guaranteed reliable loading on Netlify, mobile, and all browsers
+import imgFacade from '../assets/images/pal_hotel_facade_1787075426205.jpg';
+import imgPatio from '../assets/images/pal_entrance_patio_1787075446763.jpg';
+import imgCourtyard from '../assets/images/pal_sun_courtyard_1787075570155.jpg';
+import imgKingRoom from '../assets/images/pal_king_bedroom_1787075469895.jpg';
+import imgCozyRoom from '../assets/images/pal_cozy_double_1787075490895.jpg';
+import imgBathroom from '../assets/images/pal_hotel_bath_1787075508151.jpg';
+import imgBuffet from '../assets/images/pal_buffet_counter_1787075529282.jpg';
+import imgLounge from '../assets/images/pal_dining_lounge_1787075549913.jpg';
+import imgDiningHall from '../assets/images/pal_dining_hall_1787075601299.jpg';
+
 interface HotelImageProps {
   imageKey: string;
   alt: string;
@@ -11,23 +22,18 @@ interface HotelImageProps {
   showCaption?: boolean;
 }
 
-// Mapping of genuine uploaded hotel photos for Pal Hotel
+// Mapping of genuine hotel photos for Pal Hotel
 export const REAL_HOTEL_PHOTOS: Record<
   string,
   {
-    localPaths: string[];
+    bundledSrc: string;
     label: string;
     description: string;
     reviewCredit?: { author: string; text: string; rating: number };
   }
 > = {
   'exterior-facade': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-32-07-35_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/exterior-facade.jpg',
-      '/images/the-pal-facade.jpg',
-      '/images/the-pal-building.jpg',
-    ],
+    bundledSrc: imgFacade,
     label: 'The Pal Hotel Facade',
     description: 'Stately multi-story gray stone facade with traditional Ladakhi carved timber eaves',
     reviewCredit: {
@@ -37,11 +43,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'entrance-patio': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-31-35-33_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/entrance-patio.jpg',
-      '/images/the-pal-patio.jpg',
-    ],
+    bundledSrc: imgPatio,
     label: 'Courtyard & Front Patio',
     description: 'Front paved patio with carved wood entrance and outdoor cafe seating under green trees',
     reviewCredit: {
@@ -51,11 +53,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'courtyard-sunny': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-32-13-17_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/courtyard-sunny.jpg',
-      '/images/the-pal-courtyard.jpg',
-    ],
+    bundledSrc: imgCourtyard,
     label: 'Sunlit Courtyard Dining Patio',
     description: 'Handcrafted wooden tables and armchairs in the sunny stone-paved courtyard',
     reviewCredit: {
@@ -65,11 +63,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'room-king': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-31-44-17_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/room-king.jpg',
-      '/images/the-pal-king-bedroom.jpg',
-    ],
+    bundledSrc: imgKingRoom,
     label: 'Comfortable King Bedroom Suite',
     description: 'Spacious guest room with plush king bed, traditional geometric wool rug, desk, heater, and warm bedside sconces',
     reviewCredit: {
@@ -79,11 +73,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'room-cozy': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-32-20-30_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/room-cozy.jpg',
-      '/images/the-pal-cozy-bedroom.jpg',
-    ],
+    bundledSrc: imgCozyRoom,
     label: 'Warm & Cozy Double Room',
     description: 'Inviting queen bedding with dark runner, geometric rug, matching wooden nightstands, TV, and mountain-facing window',
     reviewCredit: {
@@ -93,11 +83,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'bathroom': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-31-47-05_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/bathroom.jpg',
-      '/images/the-pal-bathroom.jpg',
-    ],
+    bundledSrc: imgBathroom,
     label: 'Modern Ensuite Bathroom',
     description: 'Earthy terracotta tiles, modern square rain shower, floating vanity washbasin, and 24/7 hot water supply',
     reviewCredit: {
@@ -107,11 +93,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'buffet-counter': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-34-19-20_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/buffet-counter.jpg',
-      '/images/the-pal-buffet.jpg',
-    ],
+    bundledSrc: imgBuffet,
     label: 'Daily Breakfast Buffet Counter',
     description: 'Stainless steel chafing dishes serving fresh hot breakfast, poha, curries, and chutneys in the dining hall',
     reviewCredit: {
@@ -121,11 +103,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'dining-lounge': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-33-10-18_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/dining-lounge.jpg',
-      '/images/the-pal-dining-lounge.jpg',
-    ],
+    bundledSrc: imgLounge,
     label: 'Restaurant & Living Lounge',
     description: 'Solid wood dining tables, timber paneled ceiling, and soft sofa lounge area with Buddhist artwork',
     reviewCredit: {
@@ -135,11 +113,7 @@ export const REAL_HOTEL_PHOTOS: Record<
     },
   },
   'dining-hall': {
-    localPaths: [
-      '/images/Screenshot_2026-08-18-19-33-53-95_3d9111e2d3171bf4882369f490c087b4.jpg',
-      '/images/dining-hall.jpg',
-      '/images/the-pal-dining-hall.jpg',
-    ],
+    bundledSrc: imgDiningHall,
     label: 'Bright Dining Hall',
     description: 'Spacious dining hall with long timber tables, natural pine ceiling, and framed brick insets',
     reviewCredit: {
@@ -184,7 +158,6 @@ export const HotelImage: React.FC<HotelImageProps> = ({
   onClick,
 }) => {
   const photoConfig = REAL_HOTEL_PHOTOS[imageKey] || REAL_HOTEL_PHOTOS['exterior-facade'];
-  const [pathIndex, setPathIndex] = useState(0);
   const [customSrc, setCustomSrc] = useState<string | null>(getCustomImage(imageKey));
   const [imageError, setImageError] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -194,14 +167,10 @@ export const HotelImage: React.FC<HotelImageProps> = ({
     if (saved) setCustomSrc(saved);
   }, [imageKey]);
 
-  const currentSrc = customSrc || photoConfig.localPaths[pathIndex] || photoConfig.localPaths[0];
+  const currentSrc = customSrc || photoConfig.bundledSrc;
 
   const handleImageError = () => {
-    if (pathIndex < photoConfig.localPaths.length - 1) {
-      setPathIndex((prev) => prev + 1);
-    } else {
-      setImageError(true);
-    }
+    setImageError(true);
   };
 
   return (
